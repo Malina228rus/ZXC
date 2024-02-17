@@ -1,0 +1,1237 @@
+Разработайте код программного модуля, который определяет знак значения функции косинуса в зависимости от выбранной на форме четверти координатной плоскости. Проведите тестирование модуля MSUnix тестом.
+
+using System;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Ввод координат точки
+        Console.WriteLine("Введите координаты точки (x, y):");
+        double x = Convert.ToDouble(Console.ReadLine());
+        double y = Convert.ToDouble(Console.ReadLine());
+
+        // Определение четверти координатной плоскости
+        int quarter;
+        if (x > 0 && y > 0)
+        {
+            quarter = 1;
+        }
+        else if (x < 0 && y > 0)
+        {
+            quarter = 2;
+        }
+        else if (x < 0 && y < 0)
+        {
+            quarter = 3;
+        }
+        else if (x > 0 && y < 0)
+        {
+            quarter = 4;
+        }
+        else
+        {
+            Console.WriteLine("Точка находится на оси или в начале координат.");
+            return;
+        }
+
+        // Определение знака косинуса в зависимости от четверти
+        double cosValue = Math.Cos(Math.Atan2(y, x));
+        string sign;
+        if (quarter == 1 || quarter == 4)
+        {
+            sign = cosValue >= 0 ? "положительный" : "отрицательный";
+        }
+        else
+        {
+            sign = cosValue <= 0 ? "положительный" : "отрицательный";
+        }
+
+        Console.WriteLine($"Знак косинуса в четверти {quarter} координатной плоскости: {sign}");
+    }
+}
+
+
+Разработайте код программного модуля, который среди K первых членов последовательности вида:1,1+1/2,1+1/2+1/3,... находит первый, больший заданного числа A. Проведите тестирование модуля NUnix тестом.
+using System;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Введите число A:");
+        double A = Convert.ToDouble(Console.ReadLine());
+        
+        Console.WriteLine("Введите количество членов K:");
+        int K = Convert.ToInt32(Console.ReadLine());
+
+        double sum = 0;
+        int n;
+
+        for (n = 1; n <= K; n++)
+        {
+            sum += 1.0 / n;
+
+            if (sum > A)
+            {
+                break;
+            }
+        }
+
+        if (n > K)
+        {
+            Console.WriteLine("Среди первых {0} членов последовательности нет числа больше {1}.", K, A);
+        }
+        else
+        {
+            Console.WriteLine("Первый член последовательности, больший {0}, равен {1}.", A, sum);
+        }
+    }
+}
+
+
+Разработайте код программного модуля, который моделирует работу стека.
+
+using System;
+
+class Stack
+{
+    private int[] array;
+    private int top;
+    private int capacity;
+
+    public Stack(int size)
+    {
+        capacity = size;
+        array = new int[capacity];
+        top = -1; // Инициализация пустого стека
+    }
+
+    public void Push(int item)
+    {
+        if (top == capacity - 1)
+        {
+            Console.WriteLine("Стек переполнен. Невозможно добавить элемент.");
+            return;
+        }
+
+        array[++top] = item;
+        Console.WriteLine("Добавлен элемент: {0}", item);
+    }
+
+    public int Pop()
+    {
+        if (IsEmpty())
+        {
+            Console.WriteLine("Стек пуст. Невозможно извлечь элемент.");
+            return -1;
+        }
+
+        int item = array[top--];
+        Console.WriteLine("Извлечен элемент: {0}", item);
+        return item;
+    }
+
+    public int Peek()
+    {
+        if (IsEmpty())
+        {
+            Console.WriteLine("Стек пуст.");
+            return -1;
+        }
+
+        return array[top];
+    }
+
+    public bool IsEmpty()
+    {
+        return top == -1;
+    }
+
+    public void PrintStack()
+    {
+        if (IsEmpty())
+        {
+            Console.WriteLine("Стек пуст.");
+            return;
+        }
+
+        Console.WriteLine("Элементы стека:");
+        for (int i = top; i >= 0; i--)
+        {
+            Console.WriteLine(array[i]);
+        }
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Stack stack = new Stack(5);
+
+        stack.Push(1);
+        stack.Push(2);
+        stack.Push(3);
+        stack.Push(4);
+        stack.Push(5);
+
+        stack.PrintStack();
+
+        stack.Push(6); // Стек переполнен
+
+        stack.Pop();
+        stack.Pop();
+
+        stack.PrintStack();
+
+        Console.WriteLine("Верхний элемент стека: {0}", stack.Peek());
+
+        stack.Pop();
+        stack.Pop();
+        stack.Pop(); // Стек пуст
+
+        stack.PrintStack();
+    }
+}
+
+
+Разработайте код программного модуля для быстрой сортировки одномерного массива с использованием указателей и динамической памяти.
+
+using System;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Создаем массив для сортировки
+        int[] array = { 4, 2, 7, 1, 9, 5 };
+
+        // Выводим исходный массив
+        Console.WriteLine("Исходный массив:");
+        PrintArray(array);
+
+        // Сортируем массив
+        Array.Sort(array);
+
+        // Выводим отсортированный массив
+        Console.WriteLine("\nОтсортированный массив:");
+        PrintArray(array);
+    }
+
+    // Метод для вывода массива на консоль
+    static void PrintArray(int[] array)
+    {
+        foreach (int num in array)
+        {
+            Console.Write(num + " ");
+        }
+        Console.WriteLine();
+    }
+}
+
+Разработайте код программного модуля, который сортирует одномерный массив «методом пузырька».
+
+using System;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Создаем массив для сортировки
+        int[] array = { 4, 2, 7, 1, 9, 5 };
+
+        // Выводим исходный массив
+        Console.WriteLine("Исходный массив:");
+        PrintArray(array);
+
+        // Сортируем массив методом пузырька
+        BubbleSort(array);
+
+        // Выводим отсортированный массив
+        Console.WriteLine("\nОтсортированный массив:");
+        PrintArray(array);
+    }
+
+    // Метод для сортировки массива методом пузырька
+    static void BubbleSort(int[] array)
+    {
+        int n = array.Length;
+        for (int i = 0; i < n - 1; i++)
+        {
+            for (int j = 0; j < n - i - 1; j++)
+            {
+                if (array[j] > array[j + 1])
+                {
+                    // Меняем местами элементы, если текущий больше следующего
+                    int temp = array[j];
+                    array[j] = array[j + 1];
+                    array[j + 1] = temp;
+                }
+            }
+        }
+    }
+
+    // Метод для вывода массива на консоль
+    static void PrintArray(int[] array)
+    {
+        foreach (int num in array)
+        {
+            Console.Write(num + " ");
+        }
+        Console.WriteLine();
+    }
+}
+
+Разработайте код программного модуля, который определяет вид, треугольника, заданного длинами его сторон: равносторонний, равнобедренный, прямоугольный, разносторонний
+
+using System;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Введите длины сторон треугольника:");
+        double a = Convert.ToDouble(Console.ReadLine());
+        double b = Convert.ToDouble(Console.ReadLine());
+        double c = Convert.ToDouble(Console.ReadLine());
+
+        string triangleType = DetermineTriangleType(a, b, c);
+
+        Console.WriteLine($"Треугольник со сторонами {a}, {b}, {c} является {triangleType}.");
+    }
+
+    static string DetermineTriangleType(double a, double b, double c)
+    {
+        if (a == b && b == c)
+        {
+            return "равносторонний";
+        }
+        else if (a == b  b == c  a == c)
+        {
+            return "равнобедренный";
+        }
+        else if (a * a + b * b == c * c  a * a + c * c == b * b  b * b + c * c == a * a)
+        {
+            return "прямоугольный";
+        }
+        else
+        {
+            return "разносторонний";
+        }
+    }
+}
+
+
+Разработайте код программного модуля, в котором обрабатываются следующие исключительные ситуации: «отрицательное значение возраста» и «год рождения больше текущего».
+
+using System;
+
+// Пользовательское исключение для отрицательного значения возраста
+public class NegativeAgeException : Exception
+{
+    public NegativeAgeException(string message) : base(message)
+    {
+    }
+}
+
+// Пользовательское исключение для года рождения больше текущего года
+public class InvalidBirthYearException : Exception
+{
+    public InvalidBirthYearException(string message) : base(message)
+    {
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        try
+        {
+            Console.WriteLine("Введите год рождения:");
+            int birthYear = int.Parse(Console.ReadLine());
+
+            if (birthYear > DateTime.Now.Year)
+            {
+                throw new InvalidBirthYearException("Год рождения не может быть больше текущего года.");
+            }
+
+            Console.WriteLine("Введите возраст:");
+            int age = int.Parse(Console.ReadLine());
+
+            if (age < 0)
+            {
+                throw new NegativeAgeException("Возраст не может быть отрицательным.");
+            }
+
+            Console.WriteLine("Год рождения: " + birthYear);
+            Console.WriteLine("Возраст: " + age);
+        }
+        catch (FormatException)
+        {
+            Console.WriteLine("Ошибка: Некорректный формат ввода.");
+        }
+        catch (NegativeAgeException ex)
+        {
+            Console.WriteLine("Ошибка: " + ex.Message);
+        }
+        catch (InvalidBirthYearException ex)
+        {
+            Console.WriteLine("Ошибка: " + ex.Message);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Ошибка: " + ex.Message);
+        }
+    }
+}
+
+
+Разработайте код программного модуля, который генерирует массив вещественных чисел в диапазоне от –10 дои определяющий все минимальные положительные элементы.
+
+using System;
+using System.Collections.Generic;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Создаем объект Random для генерации случайных чисел
+        Random random = new Random();
+
+        // Создаем список для хранения минимальных положительных элементов
+        List<double> minPositiveElements = new List<double>();
+
+        // Генерируем массив вещественных чисел в диапазоне от -10 до 10
+        double[] array = new double[20]; // Длина массива - 20 элементов
+        for (int i = 0; i < array.Length; i++)
+        {
+            array[i] = random.NextDouble() * 20 - 10; // Генерируем числа от -10 до 10
+        }
+
+        // Выводим исходный массив на консоль
+        Console.WriteLine("Исходный массив:");
+        PrintArray(array);
+
+        // Находим минимальные положительные элементы
+        double minPositive = double.MaxValue;
+        foreach (double num in array)
+        {
+            if (num > 0 && num < minPositive)
+            {
+                minPositive = num;
+                minPositiveElements.Clear();
+                minPositiveElements.Add(num);
+            }
+            else if (num > 0 && num == minPositive)
+            {
+                minPositiveElements.Add(num);
+            }
+        }
+
+        // Выводим минимальные положительные элементы на консоль
+        Console.WriteLine("\nМинимальные положительные элементы:");
+        foreach (double num in minPositiveElements)
+        {
+            Console.WriteLine(num);
+        }
+    }
+
+    // Метод для вывода массива на консоль
+    static void PrintArray(double[] array)
+    {
+        foreach (double num in array)
+        {
+            Console.Write(num + " ");
+        }
+        Console.WriteLine();
+    }
+}
+
+Разработайте код программного модуля для решения квадратного уравнения ах2 + bх + с = 0
+
+using System;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Введите коэффициенты a, b и c квадратного уравнения ax^2 + bx + c = 0:");
+
+        Console.Write("a: ");
+        double a = double.Parse(Console.ReadLine());
+
+        Console.Write("b: ");
+        double b = double.Parse(Console.ReadLine());
+
+        Console.Write("c: ");
+        double c = double.Parse(Console.ReadLine());
+
+        // Проверяем, является ли уравнение квадратным
+        if (a == 0)
+        {
+            Console.WriteLine("Это не квадратное уравнение.");
+        }
+        else
+        {
+            // Вычисляем дискриминант
+            double discriminant = b * b - 4 * a * c;
+
+            // Проверяем значения дискриминанта
+            if (discriminant > 0)
+            {
+                // Два корня
+                double x1 = (-b + Math.Sqrt(discriminant)) / (2 * a);
+                double x2 = (-b - Math.Sqrt(discriminant)) / (2 * a);
+                Console.WriteLine("Уравнение имеет два корня:");
+                Console.WriteLine("x1 = " + x1);
+                Console.WriteLine("x2 = " + x2);
+            }
+            else if (discriminant == 0)
+            {
+                // Один корень
+                double x = -b / (2 * a);
+                Console.WriteLine("Уравнение имеет один корень:");
+                Console.WriteLine("x = " + x);
+            }
+            else
+            {
+                // Нет действительных корней
+                Console.WriteLine("Уравнение не имеет действительных корней.");
+            }
+        }
+    }
+}
+
+
+Разработайте код программного модуля для определения произведения цифр трехзначного числа.
+
+using System;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Введите трехзначное число:");
+        int number = int.Parse(Console.ReadLine());
+
+        // Проверяем, является ли число трехзначным
+        if (number < 100 || number > 999)
+        {
+            Console.WriteLine("Введено неверное число. Пожалуйста, введите трехзначное число.");
+            return;
+        }
+
+        // Определяем цифры числа
+        int digit1 = number / 100;         // Первая цифра
+        int digit2 = (number / 10) % 10;    // Вторая цифра
+        int digit3 = number % 10;           // Третья цифра
+
+        // Вычисляем произведение цифр
+        int product = digit1 * digit2 * digit3;
+
+        Console.WriteLine("Произведение цифр трехзначного числа {0} равно {1}.", number, product);
+    }
+}
+
+
+Разработайте код программного модуля для определения последовательности из n действительных чисел.
+
+using System;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Введите количество чисел в последовательности:");
+        int n = int.Parse(Console.ReadLine());
+
+        double[] sequence = new double[n];
+
+        // Запрашиваем числа для последовательности
+        for (int i = 0; i < n; i++)
+        {
+            Console.Write($"Введите {i + 1}-е число: ");
+            sequence[i] = double.Parse(Console.ReadLine());
+        }
+
+        // Выводим введенную последовательность на экран
+        Console.WriteLine("Введенная последовательность:");
+        PrintSequence(sequence);
+    }
+
+    // Метод для вывода последовательности на экран
+    static void PrintSequence(double[] sequence)
+    {
+        foreach (double num in sequence)
+        {
+            Console.Write(num + " ");
+        }
+        Console.WriteLine();
+    }
+}
+
+
+Разработайте код программного модуля для определения суммы всех элементов натурального массива N, которые не равны максимальному. 
+
+using System;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Создаем массив
+        int[] array = { 3, 7, 2, 8, 6, 4, 9, 7 };
+
+        // Находим максимальный элемент массива
+        int max = array[0];
+        foreach (int num in array)
+        {
+            if (num > max)
+            {
+                max = num;
+            }
+        }
+
+        // Вычисляем сумму всех элементов, которые не равны максимальному
+        int sum = 0;
+        foreach (int num in array)
+        {
+            if (num != max)
+            {
+                sum += num;
+            }
+        }
+
+        Console.WriteLine("Сумма всех элементов, не равных максимальному ({0}), равна {1}.", max, sum);
+    }
+}
+
+
+Разработайте код программного модуля для определения количества элементов натурального массива N, больших двух своих соседей, и вывод количества таких элементов.
+
+using System;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Создаем массив
+        int[] array = { 3, 7, 2, 8, 6, 4, 9, 7 };
+
+        // Переменная для хранения количества элементов, которые больше двух своих соседей
+        int count = 0;
+
+        // Проверяем каждый элемент массива, начиная с индекса 1 и заканчивая индексом Length - 2
+        for (int i = 1; i < array.Length - 1; i++)
+        {
+            if (array[i] > array[i - 1] && array[i] > array[i + 1])
+            {
+                count++;
+            }
+        }
+
+        Console.WriteLine("Количество элементов, больших двух своих соседей: " + count);
+    }
+}
+
+
+Разработайте код программного модуля для перестановки натурального числа N так, чтобы образовалось наибольшее число, записанное теми же цифрами
+
+using System;
+using System.Linq;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Введите натуральное число N:");
+        string numberStr = Console.ReadLine();
+
+        // Преобразуем строку в массив символов
+        char[] digits = numberStr.ToCharArray();
+
+        // Сортируем символы в порядке убывания
+        Array.Sort(digits);
+        Array.Reverse(digits);
+
+        // Объединяем отсортированные символы в одну строку
+        string resultStr = new string(digits);
+
+        // Выводим результат
+        Console.WriteLine("Наибольшее число, образованное перестановкой цифр числа {0}, равно {1}.", numberStr, resultStr);
+    }
+}
+
+
+Разработайте код программного модуля для перестановки натурального числа N так, чтобы образовалось наименьшее число, записанное теми же цифрами.
+
+using System;
+using System.Linq;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Введите натуральное число N:");
+        string numberStr = Console.ReadLine();
+
+        // Преобразуем строку в массив символов
+        char[] digits = numberStr.ToCharArray();
+
+        // Сортируем символы в порядке возрастания
+        Array.Sort(digits);
+
+        // Если первой цифре соответствует 0, помещаем её на второе место
+        if (digits[0] == '0')
+        {
+            // Ищем первую ненулевую цифру
+            int i = 1;
+            while (i < digits.Length && digits[i] == '0')
+            {
+                i++;
+            }
+
+            // Меняем местами первую и найденную ненулевую цифры
+            if (i < digits.Length)
+            {
+                char temp = digits[0];
+                digits[0] = digits[i];
+                digits[i] = temp;
+            }
+        }
+
+        // Объединяем отсортированные символы в одну строку
+        string resultStr = new string(digits);
+
+        // Выводим результат
+        Console.WriteLine("Наименьшее число, образованное перестановкой цифр числа {0}, равно {1}.", numberStr, resultStr);
+    }
+}
+
+
+Cоздайте приложение графический калькулятор на языке C# с помощью Windows Forms.
+
+using System;
+using System.Windows.Forms;
+
+namespace SimpleCalculator
+{
+    public partial class MainForm : Form
+    {
+        public MainForm()
+        {
+            InitializeComponent();
+        }
+
+        private void Button_Click(object sender, EventArgs e)
+        {
+            Button button = (Button)sender;
+
+            // Добавляем нажатую кнопку к текстовому полю вывода
+            textBoxInput.Text += button.Text;
+        }
+
+        private void ButtonClear_Click(object sender, EventArgs e)
+        {
+            // Очищаем текстовое поле
+            textBoxInput.Clear();
+        }
+
+        private void ButtonCalculate_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Вычисляем выражение из текстового поля
+                string result = new DataTable().Compute(textBoxInput.Text, null).ToString();
+                textBoxInput.Text = result;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+    }
+}
+
+
+Cоздайте приложение графический редактор на языке C# с помощью Windows Forms.
+
+using System;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace SimpleGraphicsEditor
+{
+    public partial class MainForm : Form
+    {
+        private Point startPoint;
+        private Point endPoint;
+        private bool drawing;
+
+        public MainForm()
+        {
+            InitializeComponent();
+            InitializeGraphics();
+        }
+
+        private void InitializeGraphics()
+        {
+            drawing = false;
+            pictureBox.Image = new Bitmap(pictureBox.Width, pictureBox.Height);
+            pictureBox.MouseMove += PictureBox_MouseMove;
+            pictureBox.MouseDown += PictureBox_MouseDown;
+            pictureBox.MouseUp += PictureBox_MouseUp;
+        }
+
+        private void PictureBox_MouseDown(object sender, MouseEventArgs e)
+        {
+            drawing = true;
+            startPoint = e.Location;
+        }
+
+        private void PictureBox_MouseUp(object sender, MouseEventArgs e)
+        {
+            drawing = false;
+            endPoint = e.Location;
+            using (Graphics g = Graphics.FromImage(pictureBox.Image))
+            {
+                g.DrawLine(Pens.Black, startPoint, endPoint);
+            }
+            pictureBox.Invalidate();
+        }
+
+        private void PictureBox_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (drawing)
+            {
+                endPoint = e.Location;
+                pictureBox.Invalidate();
+            }
+        }
+
+        private void PictureBox_Paint(object sender, PaintEventArgs e)
+        {
+            if (drawing)
+            {
+                e.Graphics.DrawLine(Pens.Black, startPoint, endPoint);
+            }
+        }
+
+        private void ButtonClear_Click(object sender, EventArgs e)
+        {
+            pictureBox.Image = new Bitmap(pictureBox.Width, pictureBox.Height);
+        }
+    }
+}
+
+
+Cоздайте приложение для рисования изображений на языке C# с помощью Windows Forms.
+
+using System;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace SimpleImageEditor
+{
+    public partial class MainForm : Form
+    {
+        private Bitmap drawingBitmap;
+        private Graphics graphics;
+        private Pen pen;
+        private Point startPoint;
+        private bool drawing;
+
+        public MainForm()
+        {
+            InitializeComponent();
+            InitializeGraphics();
+        }
+
+        private void InitializeGraphics()
+        {
+            drawingBitmap = new Bitmap(pictureBox.Width, pictureBox.Height);
+            pictureBox.Image = drawingBitmap;
+            graphics = Graphics.FromImage(drawingBitmap);
+            graphics.Clear(Color.White);
+            pen = new Pen(Color.Black, 2);
+            drawing = false;
+
+            pictureBox.MouseDown += PictureBox_MouseDown;
+            pictureBox.MouseMove += PictureBox_MouseMove;
+            pictureBox.MouseUp += PictureBox_MouseUp;
+        }
+
+        private void PictureBox_MouseDown(object sender, MouseEventArgs e)
+        {
+            drawing = true;
+            startPoint = e.Location;
+        }
+
+        private void PictureBox_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (drawing)
+            {
+                graphics.DrawLine(pen, startPoint, e.Location);
+                startPoint = e.Location;
+                pictureBox.Invalidate();
+            }
+        }
+
+        private void PictureBox_MouseUp(object sender, MouseEventArgs e)
+        {
+            drawing = false;
+        }
+
+        private void ButtonClear_Click(object sender, EventArgs e)
+        {
+            graphics.Clear(Color.White);
+            pictureBox.Invalidate();
+        }
+
+        private void ButtonSave_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "JPEG Image|*.jpg|PNG Image|*.png|Bitmap Image|*.bmp";
+            saveFileDialog.Title = "Сохранить изображение";
+            saveFileDialog.ShowDialog();
+
+            if (saveFileDialog.FileName != "")
+            {
+                drawingBitmap.Save(saveFileDialog.FileName);
+            }
+        }
+    }
+}
+
+
+Cоздайте приложение текстовый редактор, применяя технологию разработки многооконного приложения на языке C# с помощью Windows Forms.
+
+using System;
+using System.IO;
+using System.Windows.Forms;
+
+namespace MultiWindowTextEditor
+{
+    public partial class MainForm : Form
+    {
+        public MainForm()
+        {
+            InitializeComponent();
+        }
+
+        private void NewToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CreateNewDocument();
+        }
+
+        private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenDocument();
+        }
+
+        private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveDocument();
+        }
+
+        private void SaveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveDocumentAs();
+        }
+
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            CreateNewDocument();
+        }
+
+        private void CreateNewDocument()
+        {
+            // Создание нового дочернего окна
+            ChildForm childForm = new ChildForm();
+            childForm.MdiParent = this;
+            childForm.Text = "Untitled";
+            childForm.Show();
+        }
+
+        private void OpenDocument()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Text Files|*.txt|All Files|*.*";
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                // Открытие выбранного файла в новом дочернем окне
+                ChildForm childForm = new ChildForm();
+                childForm.MdiParent = this;
+                childForm.LoadFile(openFileDialog.FileName);
+                childForm.Show();
+            }
+        }
+
+        private void SaveDocument()
+        {
+            ChildForm childForm = (ChildForm)ActiveMdiChild;
+            if (childForm != null)
+            {
+                if (string.IsNullOrEmpty(childForm.FileName))
+                {
+                    SaveDocumentAs();
+                }
+                else
+                {
+                    childForm.SaveFile();
+                }
+            }
+        }
+
+        private void SaveDocumentAs()
+        {
+            ChildForm childForm = (ChildForm)ActiveMdiChild;
+            if (childForm != null)
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "Text Files|*.txt|All Files|*.*";
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    childForm.FileName = saveFileDialog.FileName;
+                    childForm.SaveFile();
+                }
+            }
+        }
+    }
+}
+
+
+Cоздайте приложение форма авторизации через логин и пароль, на языке C# с помощью Windows Forms.
+
+using System;
+using System.Windows.Forms;
+
+namespace LoginForm
+{
+    public partial class LoginForm : Form
+    {
+        // Задаем логин и пароль для проверки
+        private const string Username = "admin";
+        private const string Password = "password";
+
+        public LoginForm()
+        {
+            InitializeComponent();
+        }
+
+        private void LoginButton_Click(object sender, EventArgs e)
+        {
+            string enteredUsername = usernameTextBox.Text;
+            string enteredPassword = passwordTextBox.Text;
+
+            if (enteredUsername == Username && enteredPassword == Password)
+            {
+                MessageBox.Show("Вы успешно авторизовались!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // Здесь можно добавить код для перехода к следующему окну или выполнения других действий после успешной авторизации
+            }
+            else
+            {
+                MessageBox.Show("Неверный логин или пароль. Пожалуйста, попробуйте снова.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // Здесь можно добавить код для очистки полей ввода или других действий после неудачной авторизации
+            }
+        }
+    }
+}
+
+
+Cоздайте приложение для генерации паролей на языке C# с помощью Windows Forms.
+
+using System;
+using System.Windows.Forms;
+
+namespace PasswordGenerator
+{
+    public partial class MainForm : Form
+    {
+        public MainForm()
+        {
+            InitializeComponent();
+        }
+
+        private void GenerateButton_Click(object sender, EventArgs e)
+        {
+            int length = (int)lengthNumericUpDown.Value;
+            bool useLowercase = lowercaseCheckBox.Checked;
+            bool useUppercase = uppercaseCheckBox.Checked;
+            bool useDigits = digitsCheckBox.Checked;
+            bool useSpecialChars = specialCharsCheckBox.Checked;
+
+            string password = GeneratePassword(length, useLowercase, useUppercase, useDigits, useSpecialChars);
+
+            passwordTextBox.Text = password;
+        }
+
+        private string GeneratePassword(int length, bool useLowercase, bool useUppercase, bool useDigits, bool useSpecialChars)
+        {
+            const string lowercaseChars = "abcdefghijklmnopqrstuvwxyz";
+            const string uppercaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const string digitChars = "0123456789";
+            const string specialChars = "!@#$%^&*()_+-=[]{}|;:,.<>?";
+
+            string chars = "";
+
+            if (useLowercase)
+                chars += lowercaseChars;
+            if (useUppercase)
+                chars += uppercaseChars;
+            if (useDigits)
+                chars += digitChars;
+            if (useSpecialChars)
+                chars += specialChars;
+
+            Random random = new Random();
+            char[] password = new char[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                password[i] = chars[random.Next(chars.Length)];
+            }
+
+            return new string(password);
+        }
+    }
+}
+
+
+Cоздайте приложение для создания базы данных имен и фамилий на языке C# с помощью Windows Forms.
+
+using System;
+using System.Data.SQLite;
+using System.Windows.Forms;
+
+namespace NameDatabaseApp
+{
+    public partial class MainForm : Form
+    {
+        private SQLiteConnection sqliteConnection;
+
+        public MainForm()
+        {
+            InitializeComponent();
+            sqliteConnection = new SQLiteConnection("Data Source=names.db;Version=3;");
+            CreateDatabase();
+        }
+
+        private void CreateDatabase()
+        {
+            // Создаем таблицу, если она не существует
+            string createTableQuery = "CREATE TABLE IF NOT EXISTS Names (Id INTEGER PRIMARY KEY AUTOINCREMENT, FirstName TEXT, LastName TEXT)";
+            ExecuteQuery(createTableQuery);
+        }
+
+        private void ExecuteQuery(string query)
+        {
+            try
+            {
+                sqliteConnection.Open();
+                SQLiteCommand command = new SQLiteCommand(query, sqliteConnection);
+                command.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                sqliteConnection.Close();
+            }
+        }
+
+        private void AddButton_Click(object sender, EventArgs e)
+        {
+            string firstName = firstNameTextBox.Text;
+            string lastName = lastNameTextBox.Text;
+
+            string insertQuery = $"INSERT INTO Names (FirstName, LastName) VALUES ('{firstName}', '{lastName}')";
+            ExecuteQuery(insertQuery);
+
+            MessageBox.Show("Имя и фамилия успешно добавлены в базу данных.", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            firstNameTextBox.Clear();
+            lastNameTextBox.Clear();
+        }
+    }
+}
+
+
+
+
+Cоздайте прототип приложения по обмену валюты на языке C# с помощью Windows Forms.
+
+using System;
+using System.Net;
+using System.Windows.Forms;
+using Newtonsoft.Json.Linq;
+
+namespace CurrencyConverterApp
+{
+    public partial class MainForm : Form
+    {
+        private const string ApiKey = "YOUR_API_KEY"; // Замените на свой API ключ
+
+        public MainForm()
+        {
+            InitializeComponent();
+        }
+
+        private void ConvertButton_Click(object sender, EventArgs e)
+        {
+            string baseCurrency = baseCurrencyComboBox.SelectedItem.ToString();
+            string targetCurrency = targetCurrencyComboBox.SelectedItem.ToString();
+
+            if (string.IsNullOrEmpty(baseCurrency) || string.IsNullOrEmpty(targetCurrency))
+            {
+                MessageBox.Show("Выберите базовую и целевую валюты", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            double amount;
+            if (!double.TryParse(amountTextBox.Text, out amount))
+            {
+                MessageBox.Show("Введите корректную сумму", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            string apiUrl = $"https://open.er-api.com/v6/latest/{baseCurrency}?apikey={ApiKey}";
+
+            try
+            {
+                using (WebClient client = new WebClient())
+                {
+                    string response = client.DownloadString(apiUrl);
+                    JObject json = JObject.Parse(response);
+                    double rate = json["rates"][targetCurrency].Value<double>();
+                    double convertedAmount = amount * rate;
+                    resultLabel.Text = $"{amount} {baseCurrency} = {convertedAmount} {targetCurrency}";
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка при выполнении запроса к API: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            string[] currencies = { "USD", "EUR", "GBP", "JPY", "CAD", "AUD", "CHF", "CNY", "SEK", "NZD" };
+            baseCurrencyComboBox.Items.AddRange(currencies);
+            targetCurrencyComboBox.Items.AddRange(currencies);
+            baseCurrencyComboBox.SelectedIndex = 0;
+            targetCurrencyComboBox.SelectedIndex = 0;
+        }
+    }
+}
